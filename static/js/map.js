@@ -52,6 +52,34 @@ function excludePokemon (id) { // eslint-disable-line no-unused-vars
   ).trigger('change')
 }
 
+function getIncludedPokemon (excludedPokemon = []) { // eslint-disable-line no-unused-vars
+  var includedPokemon = ''
+  var notfound = true
+  var counter = 0
+  if (excludedPokemon.length > 0 && excludedPokemon.length < 151) { // If no or all pokemon are excluded no need to loop
+    for (var i = 1; i <= 151; i++) {
+      notfound = true
+      if (i => excludedPokemon[0] && i < excludedPokemon[excludedPokemon.length - 1]) {
+        if (i === excludedPokemon[counter]) {
+          notfound = false
+          counter++
+        }
+      }
+
+      if (notfound) {
+        if (includedPokemon === '') {
+          includedPokemon = String(i)
+        } else {
+          includedPokemon = includedPokemon + ',' + String(i)
+        }
+      }
+    }
+  } else if (excludedPokemon.length === 151) { // If all pokemon are hidden (lol why?) use unused pokemon id, an empty string would return all Pokémon
+    includedPokemon = '0'
+  }
+  return includedPokemon
+}
+
 function notifyAboutPokemon (id) { // eslint-disable-line no-unused-vars
   $selectPokemonNotify.val(
     $selectPokemonNotify.val().concat(id)
@@ -891,6 +919,7 @@ function loadRawData () {
   var swLng = swPoint.lng()
   var neLat = nePoint.lat()
   var neLng = nePoint.lng()
+  var includedPokemon = getIncludedPokemon(excludedPokemon)
 
   return $.ajax({
     url: 'raw_data',
@@ -905,6 +934,8 @@ function loadRawData () {
       'swLng': swLng,
       'neLat': neLat,
       'neLng': neLng
+      'neLng': neLng,
+      'ids': includedPokemon
     },
     dataType: 'json',
     cache: false,
