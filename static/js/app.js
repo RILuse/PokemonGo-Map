@@ -93,6 +93,11 @@
   var $statsToggle = document.querySelector('a[href="#stats"]')
   var $statsClose
 
+	// About.
+  var $stats = document.querySelector('#about')
+  var $statsToggle = document.querySelector('a[href="#about"]')
+  var $statsClose
+
   // Event: Prevent clicks/taps inside the nav from bubbling.
   addEventsListener($nav, 'click touchend', function (event) {
     event.stopPropagation()
